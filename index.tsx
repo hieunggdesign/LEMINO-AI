@@ -199,7 +199,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUpload, onClearIma
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        onImageUpload(reader.result as string);
+        onImageUpload(String(reader.result));
       };
       reader.onerror = () => {
         console.error("Failed to read file");
