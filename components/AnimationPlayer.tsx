@@ -6,9 +6,9 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 // Fix: Import AnimationAssets and Frame from types.ts to resolve module export errors.
-import { AnimationAssets, Frame } from '../types';
-import BananaLoader from './BananaLoader';
-import { InfoIcon, XCircleIcon, SettingsIcon, ArrowLeftIcon } from './icons';
+import { AnimationAssets, Frame } from '../types.ts';
+import BananaLoader from './BananaLoader.tsx';
+import { InfoIcon, XCircleIcon, SettingsIcon, ArrowLeftIcon } from './icons.tsx';
 
 // Add declaration for the gifshot library loaded from CDN
 declare var gifshot: any;

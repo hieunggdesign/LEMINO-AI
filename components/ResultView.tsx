@@ -4,7 +4,7 @@
 */
 
 import React from 'react';
-import { DownloadIcon } from './icons';
+import { DownloadIcon } from './icons.tsx';
 
 interface ResultViewProps {
   imageSrcs: string[];

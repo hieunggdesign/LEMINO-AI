@@ -4,7 +4,7 @@
 */
 
 import React from 'react';
-import BananaLoader from './BananaLoader';
+import BananaLoader from './BananaLoader.tsx';
 
 const LoadingOverlay: React.FC = () => {
   return (

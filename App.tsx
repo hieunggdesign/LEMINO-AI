@@ -4,12 +4,12 @@
 */
 
 import React, { useState, useCallback } from 'react';
-import { AppState } from './types';
-import { generateCharacterPlacementImage, generateProductConceptImage } from './services/geminiService';
-import LoadingOverlay from './components/LoadingOverlay';
-import ImageUploader from './components/ImageUploader';
-import ResultView from './components/ResultView';
-import { UserIcon, PackageIcon, XCircleIcon } from './components/icons';
+import { AppState } from './types.ts';
+import { generateCharacterPlacementImage, generateProductConceptImage } from './services/geminiService.ts';
+import LoadingOverlay from './components/LoadingOverlay.tsx';
+import ImageUploader from './components/ImageUploader.tsx';
+import ResultView from './components/ResultView.tsx';
+import { UserIcon, PackageIcon, XCircleIcon } from './components/icons.tsx';
 
 type Mode = 'character' | 'product';
 

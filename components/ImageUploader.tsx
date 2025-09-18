@@ -4,7 +4,7 @@
 */
 
 import React, { useRef } from 'react';
-import { UploadIcon, XCircleIcon } from './icons';
+import { UploadIcon, XCircleIcon } from './icons.tsx';
 
 interface ImageUploaderProps {
   onImageUpload: (dataUrl: string) => void;
