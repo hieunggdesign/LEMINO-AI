@@ -9,7 +9,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gifshot/0.3.2/gifshot.min.js"></script>
     <!-- Add Babel Standalone for in-browser transpilation -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script type="importmap">
+    <script>
+      // Polyfill 'process' for the browser environment to avoid a ReferenceError.
+      // The Gemini SDK expects process.env.API_KEY to be available.
+      window.process = {
+        env: {
+          // NOTE: A valid API KEY is required for the application to function correctly.
+          API_KEY: ""
+        }
+      };
+    </script>
+    <script type="importmap">
 {
   "imports": {
     "react-dom/": "https://aistudiocdn.com/react-dom@19.1.1/",
