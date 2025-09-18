@@ -241,7 +241,7 @@ const ImageUploader = ({ onImageUpload, onClearImage, imageSrc, title, icon }) =
 };
 
 // --- Inlined from components/ResultView.tsx ---
-const ResultView = ({ imageSrcs, onStartOver }) => {
+const ResultView = ({ imageSrcs, onStartOver, onContinue }) => {
   const handleDownload = (imageSrc, index) => {
     const link = document.createElement('a');
     link.href = imageSrc;
@@ -267,12 +267,18 @@ const ResultView = ({ imageSrcs, onStartOver }) => {
           </div>
         ))}
       </div>
-      <div className="w-full max-w-xs">
+      <div className="flex w-full max-w-lg flex-col sm:flex-row gap-4">
         <button
           onClick={onStartOver}
           className="w-full bg-gray-700 text-white font-bold py-3 px-6 rounded-lg hover:bg-gray-600 transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:ring-gray-500"
         >
           Start Over
+        </button>
+        <button
+          onClick={onContinue}
+          className="w-full bg-yellow-400 text-black font-bold py-3 px-6 rounded-lg hover:bg-yellow-300 transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:ring-yellow-500"
+        >
+          Continue
         </button>
       </div>
     </div>
@@ -382,6 +388,14 @@ const App = () => {
     setError(null);
   };
 
+  const handleContinue = () => {
+    setAppState(AppState.Idle);
+    // Keep characterImage, productImage, and prompt
+    setNumberOfImages(1);
+    setResultImages([]);
+    setError(null);
+  };
+
   const renderIdleContent = () => {
     const isGenerateDisabled = 
       (mode === 'character' && (!characterImage || !productImage)) ||
@@ -484,7 +498,7 @@ const App = () => {
       case AppState.Loading:
         return <LoadingOverlay />;
       case AppState.Result:
-        return resultImages.length > 0 ? <ResultView imageSrcs={resultImages} onStartOver={handleStartOver} /> : null;
+        return resultImages.length > 0 ? <ResultView imageSrcs={resultImages} onStartOver={handleStartOver} onContinue={handleContinue} /> : null;
     }
   };
 
