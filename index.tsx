@@ -6,25 +6,23 @@
 // --- React and Gemini Imports ---
 import React, { useState, useCallback, useRef } from 'react';
 import ReactDOM from 'react-dom/client';
-import { GoogleGenAI, GenerateContentResponse, Modality } from "@google/genai";
+import { GoogleGenAI, Modality } from "@google/genai";
 
 // --- Inlined from types.ts ---
-enum AppState {
-  Idle,
-  Loading,
-  Result,
-  Error,
-}
+const AppState = {
+  Idle: 0,
+  Loading: 1,
+  Result: 2,
+  Error: 3,
+};
+Object.freeze(AppState);
+
 
 // --- Inlined from services/geminiService.ts ---
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 const imageModel = 'gemini-2.5-flash-image-preview';
 
-interface GeneratedImage {
-  imageData: { data: string, mimeType: string };
-}
-
-const base64ToGenerativePart = (base64: string, mimeType: string) => {
+const base64ToGenerativePart = (base64, mimeType) => {
     return {
       inlineData: {
         data: base64,
@@ -33,8 +31,8 @@ const base64ToGenerativePart = (base64: string, mimeType: string) => {
     };
 };
 
-const executeImageGeneration = async (parts: any[]): Promise<GeneratedImage> => {
-    const response: GenerateContentResponse = await ai.models.generateContent({
+const executeImageGeneration = async (parts) => {
+    const response = await ai.models.generateContent({
         model: imageModel,
         contents: [{ role: "user", parts }],
         config: {
@@ -58,10 +56,10 @@ const executeImageGeneration = async (parts: any[]): Promise<GeneratedImage> => 
 
 
 const generateCharacterPlacementImage = async (
-    characterImage: { base64: string, mimeType: string },
-    productImage: { base64: string, mimeType: string },
-    userPrompt: string
-): Promise<GeneratedImage | null> => {
+    characterImage,
+    productImage,
+    userPrompt
+) => {
   try {
     const prompt = `You are a professional digital artist specializing in photorealistic product placement. Your task is to seamlessly integrate a product into a scene with a character.
 
@@ -91,9 +89,9 @@ OUTPUT:
 };
 
 const generateProductConceptImage = async (
-    productImage: { base64: string, mimeType: string },
-    userPrompt: string,
-): Promise<GeneratedImage | null> => {
+    productImage,
+    userPrompt,
+) => {
   try {
     const prompt = `You are a professional product photographer and digital artist. Your task is to place the product from the provided image into a new, beautifully composed scene.
     
@@ -123,7 +121,7 @@ OUTPUT:
 
 // --- Inlined from components/icons.tsx ---
 
-const XCircleIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+const XCircleIcon = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
         <circle cx="12" cy="12" r="10"></circle>
         <path d="m15 9-6 6"></path>
@@ -131,7 +129,7 @@ const XCircleIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     </svg>
 );
 
-const DownloadIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+const DownloadIcon = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
         <polyline points="7 10 12 15 17 10"></polyline>
@@ -139,7 +137,7 @@ const DownloadIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     </svg>
 );
 
-const UploadIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+const UploadIcon = (props) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
     <polyline points="17 8 12 3 7 8"></polyline>
@@ -147,14 +145,14 @@ const UploadIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   </svg>
 );
 
-const UserIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+const UserIcon = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
       <circle cx="12" cy="7" r="4"></circle>
     </svg>
 );
   
-const PackageIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+const PackageIcon = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
       <line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line>
       <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
@@ -164,13 +162,13 @@ const PackageIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
 );
 
 // --- Inlined from components/BananaLoader.tsx ---
-const BananaLoader: React.FC<{ className?: string }> = ({ className }) => {
+const BananaLoader = ({ className }) => {
   const loaderSrc = 'https://www.gstatic.com/aistudio/starter-apps/bananimate/bananaloader2.gif';
   return <img src={loaderSrc} className={className} alt="Loading animation..." />;
 };
 
 // --- Inlined from components/LoadingOverlay.tsx ---
-const LoadingOverlay: React.FC = () => {
+const LoadingOverlay = () => {
   return (
     <div className="fixed inset-0 bg-black flex items-center justify-center z-50">
       <BananaLoader className="w-72 h-72" />
@@ -179,22 +177,14 @@ const LoadingOverlay: React.FC = () => {
 };
 
 // --- Inlined from components/ImageUploader.tsx ---
-interface ImageUploaderProps {
-  onImageUpload: (dataUrl: string) => void;
-  onClearImage: () => void;
-  imageSrc: string | null;
-  title: string;
-  icon: React.ReactNode;
-}
-
-const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUpload, onClearImage, imageSrc, title, icon }) => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
+const ImageUploader = ({ onImageUpload, onClearImage, imageSrc, title, icon }) => {
+  const fileInputRef = useRef(null);
 
   const handleUploadClick = () => {
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (event) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
@@ -251,13 +241,8 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUpload, onClearIma
 };
 
 // --- Inlined from components/ResultView.tsx ---
-interface ResultViewProps {
-  imageSrcs: string[];
-  onStartOver: () => void;
-}
-
-const ResultView: React.FC<ResultViewProps> = ({ imageSrcs, onStartOver }) => {
-  const handleDownload = (imageSrc: string, index: number) => {
+const ResultView = ({ imageSrcs, onStartOver }) => {
+  const handleDownload = (imageSrc, index) => {
     const link = document.createElement('a');
     link.href = imageSrc;
     link.download = `generated-image-${index + 1}.png`;
@@ -295,19 +280,17 @@ const ResultView: React.FC<ResultViewProps> = ({ imageSrcs, onStartOver }) => {
 };
 
 // --- Inlined from App.tsx ---
-type Mode = 'character' | 'product';
-
-const App: React.FC = () => {
-  const [appState, setAppState] = useState<AppState>(AppState.Idle);
-  const [mode, setMode] = useState<Mode>('character');
-  const [characterImage, setCharacterImage] = useState<string | null>(null);
-  const [productImage, setProductImage] = useState<string | null>(null);
+const App = () => {
+  const [appState, setAppState] = useState(AppState.Idle);
+  const [mode, setMode] = useState('character');
+  const [characterImage, setCharacterImage] = useState(null);
+  const [productImage, setProductImage] = useState(null);
   const [prompt, setPrompt] = useState('');
   const [numberOfImages, setNumberOfImages] = useState(1);
-  const [resultImages, setResultImages] = useState<string[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  const [resultImages, setResultImages] = useState([]);
+  const [error, setError] = useState(null);
 
-  const handleImageUpload = (type: 'character' | 'product', dataUrl: string) => {
+  const handleImageUpload = (type, dataUrl) => {
     if (type === 'character') {
       setCharacterImage(dataUrl);
     } else {
@@ -315,7 +298,7 @@ const App: React.FC = () => {
     }
   };
 
-  const handleImageClear = (type: 'character' | 'product') => {
+  const handleImageClear = (type) => {
     if (type === 'character') {
       setCharacterImage(null);
     } else {
@@ -342,7 +325,7 @@ const App: React.FC = () => {
     setAppState(AppState.Loading);
 
     try {
-      const parseDataUrl = (dataUrl: string) => {
+      const parseDataUrl = (dataUrl) => {
         const parts = dataUrl.match(/^data:(image\/(?:jpeg|png|webp));base64,(.*)$/);
         if (!parts || parts.length !== 3) {
           throw new Error("Invalid image data URL.");
@@ -354,15 +337,15 @@ const App: React.FC = () => {
 
       for (let i = 0; i < numberOfImages; i++) {
           if (mode === 'character') {
-              const charImgParts = parseDataUrl(characterImage!);
-              const prodImgParts = parseDataUrl(productImage!);
+              const charImgParts = parseDataUrl(characterImage);
+              const prodImgParts = parseDataUrl(productImage);
               generationTasks.push(generateCharacterPlacementImage(
                   { base64: charImgParts.base64, mimeType: charImgParts.mimeType },
                   { base64: prodImgParts.base64, mimeType: prodImgParts.mimeType },
                   prompt
               ));
           } else { // mode === 'product'
-              const prodImgParts = parseDataUrl(productImage!);
+              const prodImgParts = parseDataUrl(productImage);
               generationTasks.push(generateProductConceptImage(
                   { base64: prodImgParts.base64, mimeType: prodImgParts.mimeType },
                   prompt
@@ -404,12 +387,12 @@ const App: React.FC = () => {
       (mode === 'character' && (!characterImage || !productImage)) ||
       (mode === 'product' && (!productImage || !prompt.trim()));
 
-    const modeButtonStyle = (selectedMode: Mode) => 
+    const modeButtonStyle = (selectedMode) => 
       `px-4 py-2 text-sm font-bold rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 focus-visible:ring-yellow-500 transition-colors duration-200 ${
         mode === selectedMode ? 'bg-yellow-400 text-black' : 'bg-gray-700 text-white hover:bg-gray-600'
       }`;
       
-    const numImagesButtonStyle = (num: number) =>
+    const numImagesButtonStyle = (num) =>
       `w-12 h-12 flex items-center justify-center font-bold rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:ring-yellow-500 transition-colors duration-200 ${
         numberOfImages === num ? 'bg-yellow-400 text-black' : 'bg-gray-700 text-white hover:bg-gray-600'
       }`;
