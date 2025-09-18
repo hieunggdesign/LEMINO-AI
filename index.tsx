@@ -399,8 +399,8 @@ const App = () => {
 
     return (
       <div className="flex flex-col items-center w-full max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-white mb-2">NanoBanana Product Studio</h1>
-        <p className="text-lg text-gray-400 mb-6">Create stunning product visuals with AI</p>
+        <h1 className="text-4xl font-bold text-white mb-2">LEMINO AI Product Studio</h1>
+        <p className="text-lg text-gray-400 mb-6">Tạo hình ảnh sản phẩm ấn tượng với AI</p>
 
         <div className="p-1 bg-gray-900 rounded-lg flex gap-1 mb-6">
           <button onClick={() => setMode('character')} className={modeButtonStyle('character')}>Character Placement</button>
