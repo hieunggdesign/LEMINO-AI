@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" href="data:,">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NanoBanana Product Studio</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -22,7 +23,7 @@
 </head>
   <body class="bg-black">
     <div id="root"></div>
-    <!-- Change script type to text/babel to be processed by Babel -->
-    <script type="text/babel" data-type="module" src="index.tsx"></script>
+    <!-- Change script type to text/babel and add presets to be processed by Babel -->
+    <script type="text/babel" data-presets="typescript,react" data-type="module" src="index.tsx"></script>
   </body>
 </html>
