@@ -1,5 +1,5 @@
 {
-  "name": "SeedartAI",
+  "name": "SeedartAI Ver 1.2",
   "description": "Generate images of characters using products with the Gemini API.",
   "requestFramePermissions": []
 }
